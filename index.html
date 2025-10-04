@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meu Dia - Reflexão e Organização</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <h1><i class="fas fa-sun"></i> Meu Dia</h1>
+                <p class="subtitle">Reflexão, organização e propósito</p>
+            </div>
+            <div class="current-time" id="currentTime"></div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Daily Reflection Section -->
+            <section class="card reflection-card">
+                <div class="card-header">
+                    <h2><i class="fas fa-heart"></i> Como está sendo seu dia?</h2>
+                </div>
+                <div class="card-body">
+                    <div class="question-group">
+                        <label for="dayFeeling">Como você está se sentindo hoje?</label>
+                        <div class="feeling-selector">
+                            <input type="hidden" id="dayFeeling" value="">
+                            <div class="feeling-options">
+                                <button type="button" class="feeling-option" data-value="excelente">
+                                    <i class="feeling-icon fas fa-check-circle"></i>
+                                    <span class="label">Excelente</span>
+                                </button>
+                                <button type="button" class="feeling-option" data-value="bom">
+                                    <i class="feeling-icon far fa-smile"></i>
+                                    <span class="label">Bom</span>
+                                </button>
+                                <button type="button" class="feeling-option" data-value="neutro">
+                                    <i class="feeling-icon far fa-circle"></i>
+                                    <span class="label">Neutro</span>
+                                </button>
+                                <button type="button" class="feeling-option" data-value="dificil">
+                                    <i class="feeling-icon far fa-meh"></i>
+                                    <span class="label">Difícil</span>
+                                </button>
+                                <button type="button" class="feeling-option" data-value="desafiador">
+                                    <i class="feeling-icon fas fa-times-circle"></i>
+                                    <span class="label">Desafiador</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="question-group">
+                        <label for="productivity">O que você fez de produtivo hoje?</label>
+                        <textarea id="productivity" class="input-field" rows="4" placeholder="Descreva suas conquistas e atividades produtivas do dia..."></textarea>
+                    </div>
+
+                    <div class="question-group">
+                        <label for="gratitude">Pelo que você é grato hoje?</label>
+                        <textarea id="gratitude" class="input-field" rows="3" placeholder="Liste três coisas pelas quais você é grato..."></textarea>
+                    </div>
+
+                    <div class="question-group">
+                        <label for="tomorrow">O que você quer melhorar amanhã?</label>
+                        <textarea id="tomorrow" class="input-field" rows="3" placeholder="Reflexões sobre melhorias para o próximo dia..."></textarea>
+                    </div>
+
+                    <button onclick="saveReflection()" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Salvar Reflexão
+                    </button>
+                </div>
+            </section>
+
+            <!-- Agenda Section -->
+            <section class="card agenda-card">
+                <div class="card-header">
+                    <h2><i class="fas fa-calendar-alt"></i> Agenda do Dia</h2>
+                    <button onclick="addAgendaItem()" class="btn btn-secondary btn-sm">
+                        <i class="fas fa-plus"></i> Novo
+                    </button>
+                </div>
+                <div class="card-body">
+                    <div class="agenda-form" id="agendaForm" style="display: none;">
+                        <div class="form-row">
+                            <input type="time" id="agendaTime" class="input-field" placeholder="Hora">
+                            <input type="text" id="agendaTask" class="input-field" placeholder="Tarefa ou compromisso">
+                            <select id="agendaPriority" class="input-field">
+                                <option value="low">Baixa</option>
+                                <option value="medium" selected>Média</option>
+                                <option value="high">Alta</option>
+                            </select>
+                        </div>
+                        <div class="form-actions">
+                            <button onclick="saveAgendaItem()" class="btn btn-primary btn-sm">Salvar</button>
+                            <button onclick="cancelAgendaForm()" class="btn btn-outline btn-sm">Cancelar</button>
+                        </div>
+                    </div>
+                    <div class="agenda-list" id="agendaList">
+                        <p class="empty-state">Nenhum compromisso agendado para hoje.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Notes Section -->
+            <section class="card notes-card">
+                <div class="card-header">
+                    <h2><i class="fas fa-sticky-note"></i> Notas Rápidas</h2>
+                    <button onclick="addNote()" class="btn btn-secondary btn-sm">
+                        <i class="fas fa-plus"></i> Nova Nota
+                    </button>
+                </div>
+                <div class="card-body">
+                    <div class="note-form" id="noteForm" style="display: none;">
+                        <input type="text" id="noteTitle" class="input-field" placeholder="Título da nota">
+                        <textarea id="noteContent" class="input-field" rows="4" placeholder="Conteúdo da nota..."></textarea>
+                        <div class="form-actions">
+                            <button onclick="saveNote()" class="btn btn-primary btn-sm">Salvar</button>
+                            <button onclick="cancelNoteForm()" class="btn btn-outline btn-sm">Cancelar</button>
+                        </div>
+                    </div>
+                    <div class="notes-grid" id="notesGrid">
+                        <p class="empty-state">Nenhuma nota criada ainda.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Goals Section -->
+            <section class="card goals-card">
+                <div class="card-header">
+                    <h2><i class="fas fa-target"></i> Propósitos e Metas</h2>
+                    <button onclick="addGoal()" class="btn btn-secondary btn-sm">
+                        <i class="fas fa-plus"></i> Nova Meta
+                    </button>
+                </div>
+                <div class="card-body">
+                    <div class="goal-form" id="goalForm" style="display: none;">
+                        <input type="text" id="goalTitle" class="input-field" placeholder="Título da meta">
+                        <textarea id="goalDescription" class="input-field" rows="3" placeholder="Descrição da meta..."></textarea>
+                        <div class="form-row">
+                            <select id="goalCategory" class="input-field">
+                                <option value="personal">Pessoal</option>
+                                <option value="professional">Profissional</option>
+                                <option value="health">Saúde</option>
+                                <option value="learning">Aprendizado</option>
+                                <option value="financial">Financeiro</option>
+                            </select>
+                            <input type="date" id="goalDeadline" class="input-field">
+                        </div>
+                        <div class="form-actions">
+                            <button onclick="saveGoal()" class="btn btn-primary btn-sm">Salvar</button>
+                            <button onclick="cancelGoalForm()" class="btn btn-outline btn-sm">Cancelar</button>
+                        </div>
+                    </div>
+                    <div class="goals-list" id="goalsList">
+                        <p class="empty-state">Nenhuma meta definida ainda.</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>&copy; 2025 Meu Dia - Organize sua vida com propósito</p>
+        </footer>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>
